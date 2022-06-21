@@ -1,6 +1,5 @@
 package marco.lson;
 
-import marco.lson.LsonTokenizer.Scope;
 import marco.lson.exception.LsonException;
 import marco.lson.types.ILsonValue;
 import marco.lson.types.LsonArray;
@@ -29,28 +28,12 @@ public class Lson {
     }
 
     public LsonObject asObject() {
-        if (!this.isValidScope(Scope.OBJECT)) throw new LsonException("Given json is an array.");
+        if (this.json instanceof LsonArray) throw new LsonException("Given json is an array.");
         return ((LsonObject) this.json);
     }
 
     public LsonArray asArray() {
-        if (!this.isValidScope(Scope.ARRAY)) throw new LsonException("Given json is an object.");
+        if (this.json instanceof LsonObject) throw new LsonException("Given json is an object.");
         return ((LsonArray) this.json);
-    }
-
-    private boolean isArray() {
-        return this.json instanceof LsonArray;
-    }
-
-    private boolean isObject() {
-        return this.json instanceof LsonObject;
-    }
-
-    private boolean isValidScope(Scope scope) {
-        return switch (scope) {
-            case ARRAY -> this.isArray();
-            case OBJECT -> this.isObject();
-            default -> false;
-        };
     }
 }
