@@ -72,12 +72,12 @@ public class LsonParser {
                     if (this.getNext().type() == TokenType.COLON) {
                         key = ((String) this.getCurrent().value());
                     } else {
-                        object.add(key, new LsonString(((String) this.getCurrent().value())));
+                        object.add(key, (String)this.getCurrent().value());
                     }
                     this.index++;
                 }
                 case NUMBER -> {
-                    object.add(key, new LsonNumber(((Double) this.getCurrent().value())));
+                    object.add(key, (Double) this.getCurrent().value());
                     this.index++;
                 }
                 case L_BRACKET -> {
@@ -89,7 +89,7 @@ public class LsonParser {
                     object.add(key, this.parseObject());
                 }
                 case BOOLEAN -> {
-                    object.add(key, ((boolean) this.getCurrent().value()));
+                    object.add(key, (boolean) this.getCurrent().value());
                     this.index++;
                 }
                 case NULL -> {
