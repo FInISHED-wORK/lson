@@ -14,5 +14,8 @@
   "escape_string": "\u0036\u0039",
   "object": {
     "ah": 123
-  }
+  },
+  "array": [
+    1, "HI", false, null, {}, []
+  ]
 }

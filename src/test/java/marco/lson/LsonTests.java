@@ -94,8 +94,38 @@ public class LsonTests {
         assertEquals(123, lsonObj.asNumber("number"));
         assertEquals("HI", lsonObj.asString("string"));
         assertFalse(lsonObj.asBool("bool"));
-        assertDoesNotThrow(()-> lsonObj.asArray("array"));
-        assertDoesNotThrow(()-> lsonObj.asObject("obj"));
+        assertDoesNotThrow(() -> lsonObj.asArray("array"));
+        assertDoesNotThrow(() -> lsonObj.asObject("obj"));
         assertEquals(1, lsonObj.asArray("array").getValues().size());
+    }
+
+    @Test
+    void arrayIndexAsNumber() {
+        assertEquals(1, lson.asObject().asArray("array").indexAsNumber(0));
+    }
+
+    @Test
+    void arrayIndexAsString() {
+        assertEquals("HI", lson.asObject().asArray("array").indexAsString(1));
+    }
+
+    @Test
+    void arrayIndexAsBool() {
+        assertFalse(lson.asObject().asArray("array").indexAsBool(2));
+    }
+
+    @Test
+    void arrayIndexAsNull() {
+        assertTrue(lson.asObject().asArray("array").indexIsNull(3));
+    }
+
+    @Test
+    void arrayIndexAsObject() {
+        assertDoesNotThrow(() -> lson.asObject().asArray("array").indexAsObject(4));
+    }
+
+    @Test
+    void arrayIndexAsArray() {
+        assertDoesNotThrow(() -> lson.asObject().asArray("array").indexAsArray(5));
     }
 }
