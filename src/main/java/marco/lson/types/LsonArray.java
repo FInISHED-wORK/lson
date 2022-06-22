@@ -1,5 +1,7 @@
 package marco.lson.types;
 
+import marco.lson.exception.LsonException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +25,37 @@ public class LsonArray implements ILsonValue {
     }
 
     public LsonObject indexAsObject(int index) {
+        if (!(this.get(index) instanceof LsonObject))
+            throw new LsonException("Can't convert " + this.get(index).getClass().getSimpleName() + " to object.");
         return ((LsonObject) this.get(index));
+    }
+
+    public LsonArray indexAsArray(int index) {
+        if (!(this.get(index) instanceof LsonArray))
+            throw new LsonException("Can't convert " + this.get(index).getClass().getSimpleName() + " to array.");
+        return (LsonArray) this.get(index);
+    }
+
+    public double indexAsNumber(int index) {
+        if (!(this.get(index) instanceof LsonNumber))
+            throw new LsonException("Can't convert " + this.get(index).getClass().getSimpleName() + " to object.");
+        return ((LsonNumber) this.get(index)).number();
+    }
+
+    public String indexAsString(int index) {
+        if (!(this.get(index) instanceof LsonString))
+            throw new LsonException("Can't convert " + this.get(index).getClass().getSimpleName() + " to string.");
+        return ((LsonString) this.get(index)).value();
+    }
+
+    public boolean indexAsBool(int index) {
+        if (!(this.get(index) instanceof LsonBoolean))
+            throw new LsonException("Can't convert " + this.get(index).getClass().getSimpleName() + " to boolean.");
+        return ((LsonBoolean) this.get(index)).bool();
+    }
+
+    public boolean indexIsNull(int index) {
+        return this.get(index) == null;
     }
 
     public List<ILsonValue> getValues() {
