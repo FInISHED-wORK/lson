@@ -10,10 +10,6 @@ public class LsonObject implements ILsonValue {
 
     private final Map<String, ILsonValue> values = new HashMap<>();
 
-    public Map<String, ILsonValue> getValues() {
-        return this.values;
-    }
-
     public void add(String key, ILsonValue value) {
         values.put(key, value);
     }
@@ -22,7 +18,7 @@ public class LsonObject implements ILsonValue {
         this.add(key, new LsonString(value));
     }
 
-    public void add(String key, int value) {
+    public void add(String key, double value) {
         this.add(key, new LsonNumber(value));
     }
 
@@ -41,7 +37,13 @@ public class LsonObject implements ILsonValue {
     public LsonArray asArray(String key) {
         if (!(this.getRawValue(key) instanceof LsonArray))
             throw new LsonException("Can't convert " + this.getRawValue(key).getClass().getSimpleName() + " to array.");
-        return ((LsonArray) this.getRawValue(key));
+        return (LsonArray) this.getRawValue(key);
+    }
+
+    public LsonObject asObject(String key) {
+        if (!(this.getRawValue(key) instanceof LsonObject))
+            throw new LsonException("Can't convert " + this.getRawValue(key).getClass().getSimpleName() + " to object.");
+        return (LsonObject) this.getRawValue(key);
     }
 
     public boolean asBool(String key) {

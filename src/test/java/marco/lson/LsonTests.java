@@ -1,6 +1,7 @@
 package marco.lson;
 
 import marco.lson.exception.LsonException;
+import marco.lson.types.LsonArray;
 import marco.lson.types.LsonNumber;
 import marco.lson.types.LsonObject;
 import org.junit.jupiter.api.Test;
@@ -16,13 +17,13 @@ public class LsonTests {
     @Test
     void asObjectFail() {
         var json = "[]";
-        System.out.println(assertThrows(LsonException.class, () -> new Lson(json).asObject()));
+        System.out.println(assertThrows(LsonException.class, () -> new Lson(json).asObject()).getMessage());
     }
 
     @Test
     void asArrayFail() {
         var json = "{}";
-        System.out.println(assertThrows(LsonException.class, () -> new Lson(json).asArray()));
+        System.out.println(assertThrows(LsonException.class, () -> new Lson(json).asArray()).getMessage());
     }
 
     @Test
@@ -41,8 +42,13 @@ public class LsonTests {
     }
 
     @Test
-    void objectAsArrayFail() {
-        System.out.println(assertThrows(LsonException.class, () -> lson.asObject().asArray("age")));
+    void objectKeyAsArrayFail() {
+        System.out.println(assertThrows(LsonException.class, () -> lson.asObject().asArray("age")).getMessage());
+    }
+
+    @Test
+    void objectKeyAsObjectFail() {
+        System.out.println(assertThrows(LsonException.class, () -> lson.asObject().asObject("age")).getMessage());
     }
 
     @Test
@@ -52,7 +58,7 @@ public class LsonTests {
 
     @Test
     void verifyArray() {
-        assertTrue(lson.asObject().asArray("pets").getValues().size() == 2);
+        assertEquals(2, lson.asObject().asArray("pets").getValues().size());
         assertTrue(lson.asObject().asArray("pets").get(0) instanceof LsonObject);
         assertTrue(lson.asObject().asArray("pets").get(1) instanceof LsonNumber);
     }
@@ -70,5 +76,26 @@ public class LsonTests {
     @Test
     void lsonStringEscapeString() {
         assertEquals("69", lson.asObject().asString("escape_string"));
+    }
+
+    @Test
+    void objectKeyAsObject() {
+        assertEquals(123, lson.asObject().asObject("object").asNumber("ah"));
+    }
+
+    @Test
+    void constructLsonObject() {
+        var lsonObj = new LsonObject();
+        lsonObj.add("number", 123);
+        lsonObj.add("string", "HI");
+        lsonObj.add("bool", false);
+        lsonObj.add("array", new LsonArray(new LsonNumber(123)));
+        lsonObj.add("obj", new LsonObject());
+        assertEquals(123, lsonObj.asNumber("number"));
+        assertEquals("HI", lsonObj.asString("string"));
+        assertFalse(lsonObj.asBool("bool"));
+        assertDoesNotThrow(()-> lsonObj.asArray("array"));
+        assertDoesNotThrow(()-> lsonObj.asObject("obj"));
+        assertEquals(1, lsonObj.asArray("array").getValues().size());
     }
 }

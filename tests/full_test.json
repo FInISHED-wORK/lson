@@ -11,5 +11,8 @@
   "age": 24,
   "job": null,
   "strange_number": 2e+1,
-  "escape_string": "\u0036\u0039"
+  "escape_string": "\u0036\u0039",
+  "object": {
+    "ah": 123
+  }
 }
