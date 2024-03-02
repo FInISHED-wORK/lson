@@ -22,7 +22,7 @@ The implementation is fully compatible with the official [JSON Specification](ht
 This will build and run all the tests.
 
 ```shell
-git clone https://github.com/mscode98/lson.git
+git clone https://github.com/FInISHED-wORK/lson.git
 cd lson
 gradlew build
 ```
